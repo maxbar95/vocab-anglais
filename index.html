@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ping-Pong Vocab 🏓</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Chargé ici (en haut) pour appliquer le mode sombre avant l'affichage -->
+  <script src="progression.js"></script>
+</head>
+<body>
+
+  <!-- Barre du haut -->
+  <header class="topbar">
+    <button class="logo" id="btn-logo" type="button">🏓 <span>Ping-Pong Vocab</span></button>
+    <div class="topbar-boutons">
+      <button class="icon-btn" id="btn-theme" type="button" title="Mode clair / sombre">🌙</button>
+      <button class="icon-btn" id="btn-son" type="button" title="Activer / couper le son">🔊</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ========== ÉCRAN D'ACCUEIL ========== -->
+    <section class="screen active" id="ecran-accueil">
+      <div class="scene-accueil">
+        <div class="bulle bulle-haut" id="bulle-accueil">Salut ! Prêt pour un match de vocabulaire ? 🏓</div>
+        <div class="robot robot-grand" id="robot-accueil"></div>
+      </div>
+
+      <h1>Ping-Pong Vocab</h1>
+      <p class="sous-titre">Anglais ⇄ Français, un mot après l'autre !</p>
+
+      <div class="chips">
+        <div class="chip chip-orange" id="chip-jours">🔥 <strong id="nb-jours">0</strong> <span id="texte-jours">jour d'affilée</span></div>
+        <div class="chip chip-bleu">📚 <strong id="nb-mots">0</strong> mots</div>
+        <div class="chip chip-jaune">🏆 Record : <strong id="record">–</strong></div>
+        <div class="chip chip-violet" id="chip-difficiles" hidden>🧠 <strong id="nb-difficiles">0</strong> à retravailler</div>
+      </div>
+
+      <!-- Combien de mots de la liste j'ai déjà réussis -->
+      <div class="carte-compteur">
+        <p>✅ Tu as réussi <strong id="nb-reussis">0</strong> mots sur <strong id="nb-total">0</strong></p>
+        <div class="mini-barre"><div class="mini-barre-remplie" id="barre-reussis"></div></div>
+        <p class="a-reviser">📅 <strong id="nb-a-reviser">0</strong> <span id="texte-a-reviser">mots à réviser aujourd'hui</span><span id="nb-jamais-vus"></span></p>
+      </div>
+
+      <!-- Mon badge et ma progression vers le suivant -->
+      <div class="carte-badge">
+        <span class="badge-emoji" id="badge-emoji">🔩</span>
+        <div class="badge-infos">
+          <strong id="badge-nom">Stagiaire</strong>
+          <div class="mini-barre"><div class="mini-barre-remplie" id="badge-barre"></div></div>
+          <small id="badge-texte"></small>
+        </div>
+      </div>
+
+      <!-- Réglages du quiz -->
+      <div class="reglages">
+        <p class="reglage-titre">🎯 Sens</p>
+        <div class="segments" data-reglage="sens">
+          <button type="button" data-valeur="ping-pong">🏓 Ping-pong</button>
+          <button type="button" data-valeur="en-fr">🇬🇧 → 🇫🇷</button>
+          <button type="button" data-valeur="fr-en">🇫🇷 → 🇬🇧</button>
+        </div>
+        <p class="reglage-titre">📏 Longueur</p>
+        <div class="segments" data-reglage="longueur">
+          <button type="button" data-valeur="10">10 mots</button>
+          <button type="button" data-valeur="20">20 mots</button>
+          <button type="button" data-valeur="tous">Tous (<span id="nb-tous">0</span>)</button>
+        </div>
+        <p class="reglage-titre">⏱️ Chrono</p>
+        <div class="segments" data-reglage="chrono">
+          <button type="button" data-valeur="non">Sans chrono</button>
+          <button type="button" data-valeur="oui">10 s par mot</button>
+        </div>
+      </div>
+
+      <button class="btn btn-vert btn-grand" id="btn-commencer" type="button">▶️ Commencer un quiz</button>
+      <button class="btn btn-blanc btn-grand" id="btn-mes-mots" type="button">📖 Ma liste</button>
+      <p class="petit-texte" id="info-quiz"></p>
+    </section>
+
+    <!-- ========== ÉCRAN DU QUIZ ========== -->
+    <section class="screen" id="ecran-quiz">
+      <div class="quiz-haut">
+        <button class="icon-btn" id="btn-quitter" type="button" title="Quitter le quiz">✖</button>
+        <div class="barre"><div class="barre-remplie" id="barre"></div></div>
+        <span class="compteur" id="compteur">1/20</span>
+      </div>
+
+      <div class="chrono" id="chrono" hidden>
+        <span class="chrono-sec">⏱️ <span id="chrono-sec">10</span> s</span>
+        <div class="chrono-barre"><div class="chrono-barre-remplie" id="chrono-barre"></div></div>
+      </div>
+
+      <div class="serie" id="serie">🔥 <span id="serie-nb">0</span> d'affilée</div>
+      <p class="etiquette-revision" id="etiquette-revision" hidden>🔁 Révision de tes erreurs</p>
+
+      <div class="sens" id="sens">🇬🇧 → 🇫🇷 Traduis en français</div>
+
+      <!-- Le robot « dit » le mot dans sa bulle -->
+      <div class="scene-quiz">
+        <div class="robot robot-moyen" id="robot-quiz"></div>
+        <div class="carte" id="carte">
+          <span class="carte-mot" id="mot-question">…</span>
+        </div>
+      </div>
+
+      <input class="champ" id="reponse" type="text" placeholder="Ta réponse…"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+      <p class="indice-texte" id="indice-texte" hidden></p>
+
+      <div class="boutons-quiz">
+        <button class="btn btn-blanc" id="btn-indice" type="button" title="Voir la première lettre (-0,5 point)">💡 Indice <small>-0,5</small></button>
+        <button class="btn btn-vert" id="btn-verifier" type="button" disabled>Vérifier</button>
+      </div>
+    </section>
+
+    <!-- ========== ÉCRAN DES RÉSULTATS ========== -->
+    <section class="screen" id="ecran-resultat">
+      <div class="bulle bulle-haut" id="bulle-resultat"></div>
+      <div class="scene-resultat">
+        <div class="robot robot-grand" id="robot-resultat"></div>
+        <div class="medaille" id="trophee">🏆</div>
+      </div>
+      <h1>Quiz terminé !</h1>
+
+      <div class="anneau">
+        <svg viewBox="0 0 120 120">
+          <circle class="anneau-fond" cx="60" cy="60" r="52"></circle>
+          <circle class="anneau-plein" id="anneau" cx="60" cy="60" r="52"></circle>
+        </svg>
+        <div class="anneau-texte">
+          <span id="score-final">0</span><small id="score-total">/20</small>
+        </div>
+      </div>
+
+      <p class="message-final" id="message-final"></p>
+      <p class="nouveau-record" id="nouveau-record" hidden>🎉 Nouveau record !</p>
+
+      <!-- Bilan : points gagnés, série de jours, badge -->
+      <div class="chips bilan">
+        <div class="chip chip-jaune">⭐ +<strong id="bilan-points">0</strong> pts</div>
+        <div class="chip chip-orange">🔥 <strong id="bilan-jours">0</strong> <span id="bilan-texte-jours">jour</span></div>
+        <div class="chip chip-violet"><span id="bilan-badge">🔩 Stagiaire</span></div>
+      </div>
+
+      <div class="nouveau-badge" id="nouveau-badge" hidden>
+        <span class="nouveau-badge-emoji" id="nouveau-badge-emoji">🔧</span>
+        <div>
+          <small>Nouveau badge débloqué !</small>
+          <strong id="nouveau-badge-nom">Apprenti</strong>
+        </div>
+      </div>
+
+      <div class="erreurs" id="bloc-erreurs" hidden>
+        <h2>📖 À revoir</h2>
+        <ul id="liste-erreurs"></ul>
+      </div>
+
+      <button class="btn btn-orange btn-grand" id="btn-refaire" type="button" hidden>🎯 Refaire mes erreurs (<span id="nb-erreurs">0</span>)</button>
+      <button class="btn btn-vert btn-grand" id="btn-rejouer" type="button">🔁 Nouveau quiz</button>
+      <button class="btn btn-blanc btn-grand" id="btn-accueil" type="button">🏠 Accueil</button>
+    </section>
+
+    <!-- ========== ÉCRAN « MA LISTE » (lecture seule : aucune modification possible) ========== -->
+    <section class="screen" id="ecran-mots">
+      <div class="titre-ligne">
+        <button class="icon-btn" id="btn-retour" type="button" title="Retour">←</button>
+        <h1>📖 Ma liste</h1>
+      </div>
+      <p class="petit-texte">Relis tes mots tranquillement, sans jouer. <span id="nb-affiches"></span></p>
+
+      <input class="champ petit recherche" id="recherche" type="search" placeholder="🔍 Rechercher un mot…">
+
+      <div class="segments filtres" id="filtres">
+        <button type="button" data-filtre="tous" class="choisi">Tous</button>
+        <button type="button" data-filtre="reussi">✅ Réussis</button>
+        <button type="button" data-filtre="difficile">🧠 À revoir</button>
+        <button type="button" data-filtre="nouveau">⚪ Jamais réussis</button>
+      </div>
+
+      <ul class="liste-mots" id="liste-mots"></ul>
+    </section>
+
+  </main>
+
+  <!-- Bandeau de correction (en bas pendant le quiz) -->
+  <div class="bandeau" id="bandeau">
+    <div class="bandeau-contenu">
+      <div class="bandeau-texte">
+        <p class="bandeau-titre" id="bandeau-titre"></p>
+        <p class="bandeau-detail" id="bandeau-detail"></p>
+      </div>
+      <button class="btn btn-grand" id="btn-continuer" type="button">Continuer</button>
+    </div>
+  </div>
+
+  <!-- Zone pour les confettis -->
+  <div id="confettis"></div>
+
+  <script src="mots.js"></script>
+  <script src="robot.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

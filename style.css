@@ -1,0 +1,616 @@
+/* ============ Couleurs et réglages généraux ============ */
+:root {
+  --vert: #58cc02;
+  --vert-ombre: #46a302;
+  --vert-clair: #d7ffb8;
+  --bleu: #1cb0f6;
+  --bleu-ombre: #1899d6;
+  --bleu-clair: #ddf4ff;
+  --rouge: #ff4b4b;
+  --rouge-ombre: #ea2b2b;
+  --rouge-clair: #ffdfe0;
+  --jaune: #ffc800;
+  --jaune-clair: #fff5d3;
+  --orange: #ff9600;
+  --violet: #ce82ff;
+  --texte: #3c3c3c;
+  --gris: #777;
+  --bordure: #e5e5e5;
+  --fond: #f7f7f7;
+  --carte: #fff;
+
+  /* Couleurs des textes et des fonds pâles (changent en mode sombre) */
+  --vert-texte: #46a302;
+  --rouge-texte: #ea2b2b;
+  --bleu-texte: #1899d6;
+  --jaune-texte: #b07a00;
+  --orange-clair: #ffeed6;
+  --orange-texte: #d97f00;
+  --violet-clair: #f3e3ff;
+  --violet-texte: #9c4fd6;
+  --desactive-texte: #afafaf;
+  --desactive-ombre: #cfcfcf;
+  color-scheme: light;
+}
+
+/* ============ Mode sombre ============ */
+:root[data-theme="dark"] {
+  --texte: #eef3f5;
+  --gris: #9fb0b8;
+  --bordure: #37464f;
+  --fond: #131f24;
+  --carte: #1d2b32;
+
+  --vert-clair: #1f3a14;
+  --rouge-clair: #3d1d20;
+  --bleu-clair: #12384b;
+  --jaune-clair: #3a3112;
+  --orange-clair: #3d2a10;
+  --violet-clair: #352347;
+
+  --vert-texte: #8ee43d;
+  --rouge-texte: #ff8080;
+  --bleu-texte: #6cd0ff;
+  --jaune-texte: #ffd84d;
+  --orange-texte: #ffb54d;
+  --violet-texte: #dcaeff;
+  --desactive-texte: #6b7b83;
+  --desactive-ombre: #26343b;
+  color-scheme: dark;
+}
+
+/* Passage en douceur d'un thème à l'autre */
+body, .topbar, .carte, .bulle, .reglages, .carte-badge, .carte-compteur, .liste-mots li, .champ, .icon-btn {
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
+  font-weight: 700;
+  color: var(--texte);
+  background: var(--fond);
+  min-height: 100vh;
+}
+
+main {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px 16px 160px;
+}
+
+h1 { font-size: 1.8rem; font-weight: 900; margin: 8px 0; text-align: center; }
+h2 { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; }
+
+/* ============ Barre du haut ============ */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--carte);
+  border-bottom: 2px solid var(--bordure);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.logo {
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--vert);
+  cursor: pointer;
+}
+
+.icon-btn {
+  border: 2px solid var(--bordure);
+  background: var(--carte);
+  border-radius: 12px;
+  width: 42px;
+  height: 42px;
+  font-size: 1.15rem;
+  cursor: pointer;
+  color: var(--gris);
+  flex-shrink: 0;
+}
+.icon-btn:hover { background: var(--fond); }
+.topbar-boutons { display: flex; gap: 8px; }
+
+/* ============ Écrans ============ */
+.screen { display: none; }
+.screen.active { display: block; animation: apparition 0.35s ease; }
+
+@keyframes apparition {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ============ Boutons (style « 3D » arrondi) ============ */
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 16px;
+  padding: 13px 22px;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s, filter 0.15s;
+  color: #fff;
+}
+.btn:active:not(:disabled) { transform: translateY(4px); box-shadow: none !important; }
+.btn:hover:not(:disabled) { filter: brightness(1.06); }
+.btn:disabled { background: var(--bordure) !important; color: var(--desactive-texte); box-shadow: 0 4px 0 var(--desactive-ombre) !important; cursor: default; }
+
+.btn-grand { display: block; width: 100%; margin: 12px 0; padding: 16px; }
+.btn-vert  { background: var(--vert);  box-shadow: 0 4px 0 var(--vert-ombre); }
+.btn-bleu  { background: var(--bleu);  box-shadow: 0 4px 0 var(--bleu-ombre); }
+.btn-rouge { background: var(--rouge); box-shadow: 0 4px 0 var(--rouge-ombre); }
+.btn-orange { background: var(--orange); box-shadow: 0 4px 0 #d97f00; }
+.btn-blanc { background: var(--carte); color: var(--bleu); border: 2px solid var(--bordure); box-shadow: 0 4px 0 var(--bordure); }
+
+/* ============ La mascotte robot ============ */
+.robot svg { display: block; width: 100%; height: auto; overflow: visible; }
+.robot-grand { width: 150px; margin: 0 auto; cursor: pointer; }
+.robot-moyen { width: 110px; flex-shrink: 0; }
+
+/* Par défaut : yeux et bouche « normaux » */
+.robot .yeux-content, .robot .yeux-triste,
+.robot .bouche-content, .robot .bouche-triste { display: none; }
+
+.robot.content .yeux-normal, .robot.content .bouche-normal,
+.robot.fete .yeux-normal, .robot.fete .bouche-normal { display: none; }
+.robot.content .yeux-content, .robot.content .bouche-content,
+.robot.fete .yeux-content, .robot.fete .bouche-content { display: inline; }
+
+.robot.triste .yeux-normal, .robot.triste .bouche-normal { display: none; }
+.robot.triste .yeux-triste, .robot.triste .bouche-triste { display: inline; }
+
+/* Pièces qui bougent : on les fait tourner autour du bon point */
+.robot .corps, .robot .tete, .robot .bras, .robot .yeux-normal { transform-box: fill-box; }
+.robot .tete { transform-origin: 50% 95%; }
+.robot .bras { transform-origin: 50% 8%; transition: transform 0.3s; }
+.robot .yeux-normal { transform-origin: center; animation: cligne 4s infinite; }
+
+/* Au repos : il flotte doucement */
+.robot .corps { animation: flotte 3s ease-in-out infinite; }
+
+/* Content : il saute et lève les bras */
+.robot.content .corps { animation: saut 0.6s ease; }
+.robot.content .bras-g { transform: rotate(150deg); }
+.robot.content .bras-d { transform: rotate(-150deg); }
+
+/* Triste : il secoue la tête */
+.robot.triste .tete { animation: non 0.6s ease; }
+.robot.triste .bras-g { transform: rotate(12deg); }
+.robot.triste .bras-d { transform: rotate(-12deg); }
+
+/* Fête : il saute en agitant les bras, en boucle */
+.robot.fete .corps { animation: saut 0.7s ease infinite; }
+.robot.fete .bras-g { animation: agite-g 0.35s ease-in-out infinite alternate; }
+.robot.fete .bras-d { animation: agite-d 0.35s ease-in-out infinite alternate; }
+
+@keyframes flotte { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes cligne { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes saut {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  20% { transform: translateY(3px) scaleY(0.94); }
+  50% { transform: translateY(-18px) scaleY(1.03); }
+}
+@keyframes non {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-9deg); }
+  50% { transform: rotate(8deg); }
+  75% { transform: rotate(-5deg); }
+}
+@keyframes agite-g { from { transform: rotate(130deg); } to { transform: rotate(170deg); } }
+@keyframes agite-d { from { transform: rotate(-130deg); } to { transform: rotate(-170deg); } }
+
+/* Bulle de dialogue */
+.bulle {
+  position: relative;
+  background: var(--carte);
+  border: 2px solid var(--bordure);
+  border-radius: 18px;
+  padding: 12px 16px;
+  font-weight: 800;
+  text-align: center;
+}
+.bulle-haut { margin: 16px auto 14px; max-width: 320px; }
+.bulle-haut::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  width: 16px;
+  height: 16px;
+  background: var(--carte);
+  border-right: 2px solid var(--bordure);
+  border-bottom: 2px solid var(--bordure);
+  transform: translateX(-50%) rotate(45deg);
+}
+.bulle.pop { animation: pop 0.4s ease; }
+
+/* ============ Accueil ============ */
+.sous-titre { text-align: center; color: var(--gris); margin: 0 0 20px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
+.chip { padding: 8px 16px; border-radius: 999px; font-size: 0.95rem; }
+.chip-bleu  { background: var(--bleu-clair); color: var(--bleu-texte); }
+.chip-jaune { background: var(--jaune-clair); color: var(--jaune-texte); }
+.chip-violet { background: var(--violet-clair); color: var(--violet-texte); }
+.chip-orange { background: var(--orange-clair); color: var(--orange-texte); }
+.chip-orange.eteint { background: var(--bordure); color: var(--gris); }
+
+/* Carte du badge sur l'accueil */
+.carte-badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--carte);
+  border: 2px solid var(--bordure);
+  border-radius: 20px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+.badge-emoji {
+  font-size: 2.2rem;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  background: var(--violet-clair);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.badge-infos { flex: 1; min-width: 0; }
+.badge-infos strong { font-size: 1.1rem; font-weight: 900; }
+.badge-infos small { color: var(--gris); }
+.mini-barre { height: 10px; background: var(--bordure); border-radius: 999px; overflow: hidden; margin: 6px 0 4px; }
+.mini-barre-remplie { height: 100%; width: 0; background: var(--violet); border-radius: 999px; transition: width 0.8s ease; }
+
+/* Nouveau badge débloqué (écran de score) */
+.nouveau-badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--violet-clair), var(--bleu-clair));
+  border: 2px solid var(--violet);
+  border-radius: 20px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  animation: pop 0.6s ease 1.5s both;
+}
+.nouveau-badge-emoji { font-size: 2.6rem; animation: trophee 0.9s cubic-bezier(.3, 1.6, .5, 1) 1.5s both; }
+.nouveau-badge small { display: block; color: var(--violet-texte); }
+.nouveau-badge strong { font-size: 1.3rem; font-weight: 900; }
+
+.bilan { margin: 12px 0 4px; }
+
+/* Compteur « Tu as réussi X mots sur Y » */
+.carte-compteur {
+  background: var(--carte);
+  border: 2px solid var(--bordure);
+  border-radius: 20px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+.carte-compteur p { margin: 0; }
+.carte-compteur strong { color: var(--vert-texte); font-weight: 900; }
+.carte-compteur .mini-barre-remplie { background: var(--vert); }
+.carte-compteur .a-reviser { margin-top: 8px; color: var(--gris); }
+.carte-compteur .a-reviser strong { color: var(--bleu-texte); }
+
+/* Date de prochaine révision dans « Ma liste » */
+.liste-mots .quand { font-size: 0.82rem; color: var(--gris); flex-shrink: 0; }
+.liste-mots .quand.aujourdhui { color: var(--bleu-texte); }
+
+/* Réglages : boutons « segments » (on en choisit un seul) */
+.reglages {
+  background: var(--carte);
+  border: 2px solid var(--bordure);
+  border-radius: 20px;
+  padding: 14px 16px 16px;
+  margin-bottom: 8px;
+}
+.reglage-titre { margin: 4px 0 8px; font-size: 0.95rem; color: var(--gris); }
+.reglage-titre + .segments { margin-bottom: 10px; }
+.segments { display: flex; gap: 8px; }
+.segments button {
+  flex: 1;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  padding: 10px 6px;
+  border-radius: 14px;
+  border: 2px solid var(--bordure);
+  border-bottom-width: 4px;
+  background: var(--carte);
+  color: var(--texte);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.segments button:active { transform: translateY(2px); }
+.segments button.choisi {
+  border-color: var(--bleu);
+  background: var(--bleu-clair);
+  color: var(--bleu-texte);
+}
+
+.petit-texte { font-size: 0.88rem; color: var(--gris); text-align: center; margin: 6px 0; }
+
+/* ============ Quiz ============ */
+.quiz-haut { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.barre {
+  flex: 1;
+  height: 18px;
+  background: var(--bordure);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.barre-remplie {
+  height: 100%;
+  width: 0%;
+  background: var(--vert);
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(.3, 1.5, .6, 1);
+  position: relative;
+}
+/* petit reflet sur la barre */
+.barre-remplie::after {
+  content: "";
+  position: absolute;
+  left: 8px; right: 8px; top: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+.compteur { font-weight: 800; color: var(--gris); min-width: 44px; text-align: right; }
+
+.serie {
+  text-align: center;
+  color: var(--orange);
+  font-weight: 900;
+  height: 24px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.serie.visible { opacity: 1; }
+.serie.pop { animation: pop 0.4s ease; }
+
+.sens {
+  display: inline-block;
+  background: var(--bleu-clair);
+  color: var(--bleu-texte);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  margin: 8px 0 14px;
+}
+.sens.fr-en { background: var(--violet-clair); color: var(--violet-texte); }
+
+.scene-quiz { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+
+/* La carte du mot = la bulle du robot */
+.carte {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  background: var(--carte);
+  border: 2px solid var(--bordure);
+  border-bottom-width: 5px;
+  border-radius: 22px;
+  padding: 32px 18px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.carte::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: var(--carte);
+  border-left: 2px solid;
+  border-bottom: 2px solid;
+  border-color: inherit;
+  transform: translateY(-50%) rotate(45deg);
+}
+.carte-mot { font-size: 2rem; font-weight: 900; word-break: break-word; }
+.carte.nouvelle { animation: arrivee 0.4s cubic-bezier(.3, 1.4, .6, 1); }
+.carte.bon { border-color: var(--vert); animation: pop 0.45s ease; }
+.carte.faux { border-color: var(--rouge); }
+
+@keyframes arrivee {
+  from { opacity: 0; transform: translateX(60px) rotate(4deg); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.champ {
+  width: 100%;
+  font: inherit;
+  font-size: 1.2rem;
+  padding: 15px 18px;
+  border: 2px solid var(--bordure);
+  border-radius: 16px;
+  background: var(--carte);
+  color: var(--texte);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.champ:focus { border-color: var(--bleu); }
+.champ.petit { font-size: 1rem; padding: 12px 14px; }
+.champ.bon  { border-color: var(--vert);  background: var(--vert-clair); }
+.champ.faux { border-color: var(--rouge); background: var(--rouge-clair); animation: secousse 0.45s; }
+
+@keyframes secousse {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-7px); }
+  80% { transform: translateX(7px); }
+}
+
+/* Chrono : barre de temps qui se vide */
+.chrono { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.chrono-sec { font-weight: 900; color: var(--bleu-texte); min-width: 64px; }
+.chrono-barre { flex: 1; height: 10px; background: var(--bordure); border-radius: 999px; overflow: hidden; }
+.chrono-barre-remplie { height: 100%; width: 100%; background: var(--bleu); border-radius: 999px; }
+.chrono.urgent .chrono-sec { color: var(--rouge); animation: pop 0.5s ease infinite; }
+.chrono.urgent .chrono-barre-remplie { background: var(--rouge); }
+
+.etiquette-revision {
+  text-align: center;
+  color: var(--orange-texte);
+  font-weight: 900;
+  margin: 0 0 4px;
+}
+
+.indice-texte {
+  margin: 10px 0 0;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: var(--jaune-clair);
+  color: var(--jaune-texte);
+  animation: pop 0.35s ease;
+}
+
+.boutons-quiz { display: flex; gap: 10px; margin: 14px 0; }
+.boutons-quiz #btn-verifier { flex: 1; }
+.boutons-quiz #btn-indice small { font-size: 0.75em; opacity: 0.8; }
+
+/* ============ Bandeau de correction ============ */
+.bandeau {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+  transform: translateY(110%);
+  transition: transform 0.3s cubic-bezier(.3, 1.3, .6, 1);
+  z-index: 20;
+}
+.bandeau.visible { transform: none; }
+.bandeau.bon  { background: var(--vert-clair); }
+.bandeau.faux { background: var(--rouge-clair); }
+.bandeau-contenu { max-width: 560px; margin: 0 auto; }
+.bandeau-titre { font-size: 1.35rem; font-weight: 900; margin: 0 0 4px; }
+.bandeau-detail { margin: 0; font-size: 1.05rem; }
+.bandeau.bon .bandeau-titre, .bandeau.bon .bandeau-detail { color: var(--vert-texte); }
+.bandeau.faux .bandeau-titre, .bandeau.faux .bandeau-detail { color: var(--rouge-texte); }
+.bandeau.bon #btn-continuer  { background: var(--vert);  box-shadow: 0 4px 0 var(--vert-ombre); }
+.bandeau.faux #btn-continuer { background: var(--rouge); box-shadow: 0 4px 0 var(--rouge-ombre); }
+
+/* ============ Résultats ============ */
+.scene-resultat { position: relative; width: 150px; margin: 16px auto 0; }
+.medaille {
+  position: absolute;
+  right: -34px;
+  top: -6px;
+  font-size: 3rem;
+  animation: trophee 0.9s cubic-bezier(.3, 1.6, .5, 1) 0.3s both;
+}
+@keyframes trophee {
+  from { transform: scale(0) rotate(-180deg); }
+  to   { transform: scale(1) rotate(0); }
+}
+
+.anneau { position: relative; width: 180px; height: 180px; margin: 10px auto; }
+.anneau svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.anneau circle { fill: none; stroke-width: 12; stroke-linecap: round; }
+.anneau-fond { stroke: var(--bordure); }
+.anneau-plein {
+  stroke: var(--vert);
+  stroke-dasharray: 326.7;
+  stroke-dashoffset: 326.7;
+  transition: stroke-dashoffset 1.4s ease-out;
+}
+.anneau-texte {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 900;
+}
+.anneau-texte small { font-size: 1.3rem; color: var(--gris); margin-top: 18px; }
+
+.message-final { text-align: center; font-size: 1.2rem; font-weight: 800; margin: 6px 0; }
+.nouveau-record {
+  text-align: center;
+  color: var(--jaune-texte);
+  background: var(--jaune-clair);
+  border-radius: 999px;
+  padding: 8px;
+  font-weight: 900;
+  animation: pop 0.6s ease 1.2s both;
+}
+
+.erreurs {
+  background: var(--carte);
+  border: 2px solid var(--bordure);
+  border-radius: 18px;
+  padding: 16px;
+  margin: 16px 0;
+}
+.erreurs ul { list-style: none; margin: 0; padding: 0; }
+.erreurs li { padding: 8px 0; border-top: 1px solid var(--bordure); }
+.erreurs li:first-child { border-top: none; }
+.erreurs .bonne { color: var(--vert-texte); }
+
+/* ============ Liste des mots ============ */
+.titre-ligne { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.titre-ligne h1 { margin: 0; text-align: left; }
+
+.recherche { margin-bottom: 12px; }
+
+.liste-mots { list-style: none; padding: 0; margin: 0 0 16px; }
+.liste-mots li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--carte);
+  border: 2px solid var(--bordure);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.liste-mots .etat { font-size: 1.3rem; flex-shrink: 0; }
+.liste-mots .textes { flex: 1; min-width: 160px; }
+.liste-mots .en { font-weight: 900; }
+.liste-mots .fr { color: var(--gris); }
+.liste-vide { text-align: center; color: var(--gris); padding: 16px; }
+
+.filtres { margin-bottom: 12px; }
+.filtres button { font-size: 0.85rem; }
+
+/* ============ Confettis ============ */
+#confettis { position: fixed; inset: 0; pointer-events: none; z-index: 30; overflow: hidden; }
+.confetti { position: absolute; width: 10px; height: 14px; border-radius: 3px; }
+
+/* ============ Téléphone ============ */
+@media (max-width: 420px) {
+  h1 { font-size: 1.5rem; }
+  .logo span { font-size: 1.05rem; }
+  .carte { padding: 24px 12px; }
+  .carte-mot { font-size: 1.45rem; }
+  .robot-moyen { width: 78px; }
+  .segments button { font-size: 0.82rem; padding: 9px 4px; }
+  .boutons-quiz .btn { padding: 13px 14px; }
+  .filtres { flex-wrap: wrap; }
+  .filtres button { flex: 1 1 40%; }
+  .scene-quiz { gap: 12px; }
+}
