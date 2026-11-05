@@ -1,0 +1,3 @@
+# Réglages pour Netlify : indique au navigateur que ce fichier est la « fiche d'identité » de l'appli
+/manifest.webmanifest
+  Content-Type: application/manifest+json
