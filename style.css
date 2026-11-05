@@ -682,3 +682,125 @@ h2 { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; }
   .filtres button { flex: 1 1 40%; }
   .scene-quiz { gap: 12px; }
 }
+
+/* =====================================================
+   THÈME « ATELIER » : anthracite + jaune sécurité
+   Ce bloc remplace les couleurs, la police et les arrondis du dessus.
+   Pour revenir à l'ancien look, il suffit de supprimer ce bloc.
+   ===================================================== */
+:root {
+  --anthracite: #1f2933;
+  --jaune-securite: #ffc400;
+  --jaune-ombre: #d9a400;
+
+  --fond: #f3f1ec;          /* gris béton clair */
+  --carte: #fff;
+  --texte: #1f2933;
+  --gris: #66707a;
+  --bordure: #e2ded5;
+
+  --vert: #2f9e44;          /* bonne réponse */
+  --vert-ombre: #237a33;
+  --vert-clair: #dcf3e0;
+  --vert-texte: #237a33;
+
+  --bleu: #2b3640;          /* accent : anthracite */
+  --bleu-ombre: #11161b;
+  --bleu-clair: #e8ebef;
+  --bleu-texte: #2b3640;
+
+  --rouge: #e5484d;
+  --rouge-ombre: #c13338;
+  --rouge-clair: #fde2e3;
+  --rouge-texte: #c13338;
+
+  --jaune: #ffc400;
+  --jaune-clair: #fff3c4;
+  --jaune-texte: #8a6400;
+
+  --orange: #ff8a1f;
+  --orange-clair: #ffe8d4;
+  --orange-texte: #c05f00;
+
+  --violet: #3d6f9e;        /* bleu « plan d'atelier » */
+  --violet-clair: #e1ebf5;
+  --violet-texte: #2d5a85;
+}
+
+:root[data-theme="dark"] {
+  --fond: #12171c;
+  --carte: #1b232b;
+  --texte: #eef1f4;
+  --gris: #9aa5b1;
+  --bordure: #2e3843;
+
+  --vert-clair: #173322;
+  --vert-texte: #6fd38a;
+  --rouge-clair: #3a1d20;
+  --rouge-texte: #ff8a8e;
+
+  --bleu: #c9d1d9;
+  --bleu-ombre: #0b0f13;
+  --bleu-clair: #26303a;
+  --bleu-texte: #dbe2e9;
+
+  --jaune-clair: #3a3110;
+  --jaune-texte: #ffd54d;
+  --orange-clair: #3d2a10;
+  --orange-texte: #ffb26b;
+  --violet: #6fa3d6;
+  --violet-clair: #1d3248;
+  --violet-texte: #9cc4ec;
+}
+
+/* Police « panneau de chantier » */
+body { font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-weight: 600; }
+h1, h2, .logo, .btn, .carte-mot, .bandeau-titre, .anneau-texte, .segments button, .chip {
+  font-family: "Barlow Condensed", "Barlow", "Segoe UI", sans-serif;
+}
+h1 { font-weight: 800; letter-spacing: 0.3px; }
+.carte-mot { font-weight: 700; letter-spacing: 0.3px; }
+
+/* Barre du haut : anthracite, avec une bande jaune et noire en dessous */
+.topbar {
+  background: var(--anthracite);
+  border-bottom: none;
+  box-shadow: 0 6px 0 0 transparent;
+  position: sticky;
+}
+.topbar::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 6px;
+  background: repeating-linear-gradient(-45deg, var(--jaune-securite) 0 10px, var(--anthracite) 10px 20px);
+}
+.logo { color: var(--jaune-securite); }
+.topbar .icon-btn { background: #2b3640; border-color: #3a4652; color: #fff; }
+.topbar .icon-btn:hover { background: #36424e; }
+:root[data-theme="dark"] .topbar { background: #0d1116; }
+:root[data-theme="dark"] .topbar::after {
+  background: repeating-linear-gradient(-45deg, var(--jaune-securite) 0 10px, #0d1116 10px 20px);
+}
+
+/* Boutons : moins arrondis, le bouton principal en jaune sécurité */
+.btn { border-radius: 10px; letter-spacing: 1px; }
+.btn-vert { background: var(--jaune-securite); color: var(--anthracite); box-shadow: 0 4px 0 var(--jaune-ombre); }
+.bandeau.bon #btn-continuer { color: #fff; }
+.btn-blanc { color: var(--texte); }
+
+/* Choix sélectionné dans les réglages : jaune */
+.segments button { border-radius: 10px; }
+.segments button.choisi {
+  border-color: var(--jaune-ombre);
+  background: var(--jaune-clair);
+  color: var(--texte);
+}
+
+/* Cartes et champs : angles plus nets */
+.chip { border-radius: 8px; }
+.carte { border-radius: 16px; }
+.champ { border-radius: 10px; }
+.reglages, .carte-badge, .carte-compteur, .erreurs, .bulle { border-radius: 14px; }
+.liste-mots li { border-radius: 10px; }
+.btn-ecouter { border-radius: 10px; }

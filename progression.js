@@ -176,7 +176,7 @@ function appliquerTheme(theme) {
   document.documentElement.dataset.theme = theme;
   // La barre du téléphone (en haut) prend la couleur du thème
   const barre = document.querySelector('meta[name="theme-color"]');
-  if (barre) barre.content = theme === "dark" ? "#1d2b32" : "#ffffff";
+  if (barre) barre.content = theme === "dark" ? "#0d1116" : "#1f2933";
 }
 
 function changerTheme() {

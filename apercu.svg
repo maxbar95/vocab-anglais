@@ -2,24 +2,25 @@
      L'image apercu.jpg est fabriquée à partir de ce dessin. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <defs>
-    <radialGradient id="fond" cx="30%" cy="40%" r="90%">
-      <stop offset="0" stop-color="#7ee026"/>
-      <stop offset="1" stop-color="#46a302"/>
-    </radialGradient>
+    <clipPath id="bande"><rect y="582" width="1200" height="48"/></clipPath>
     <style>
       .yeux-normal, .yeux-triste, .bouche-normal, .bouche-triste { display: none; }
-      .titre { font-family: "Segoe UI", "Arial Rounded MT Bold", Arial, sans-serif; font-weight: 900; }
+      .titre { font-family: Bahnschrift, "DIN Alternate", "Arial Narrow", Arial, sans-serif; font-weight: 700; }
     </style>
   </defs>
-  <rect width="1200" height="630" fill="url(#fond)"/>
+  <rect width="1200" height="630" fill="#1f2933"/>
+  <!-- Bande de chantier jaune et noire en bas -->
+  <g clip-path="url(#bande)">
+    <rect y="582" width="1200" height="48" fill="#ffc400"/>
+    <path d="M-48 630 L0 582 H32 L-16 630 Z M16 630 L64 582 H96 L48 630 Z M80 630 L128 582 H160 L112 630 Z M144 630 L192 582 H224 L176 630 Z M208 630 L256 582 H288 L240 630 Z M272 630 L320 582 H352 L304 630 Z M336 630 L384 582 H416 L368 630 Z M400 630 L448 582 H480 L432 630 Z M464 630 L512 582 H544 L496 630 Z M528 630 L576 582 H608 L560 630 Z M592 630 L640 582 H672 L624 630 Z M656 630 L704 582 H736 L688 630 Z M720 630 L768 582 H800 L752 630 Z M784 630 L832 582 H864 L816 630 Z M848 630 L896 582 H928 L880 630 Z M912 630 L960 582 H992 L944 630 Z M976 630 L1024 582 H1056 L1008 630 Z M1040 630 L1088 582 H1120 L1072 630 Z M1104 630 L1152 582 H1184 L1136 630 Z M1168 630 L1216 582 H1248 L1200 630 Z M1232 630 L1280 582 H1312 L1264 630 Z" fill="#1f2933"/>
+  </g>
 
   <!-- Balles de ping-pong décoratives -->
-  <circle cx="1100" cy="95" r="30" fill="#fff" opacity="0.9"/>
-  <circle cx="560" cy="560" r="18" fill="#fff" opacity="0.7"/>
-  <circle cx="120" cy="80" r="14" fill="#fff" opacity="0.6"/>
+  <circle cx="1110" cy="90" r="26" fill="#fff" opacity="0.9"/>
+  <circle cx="575" cy="530" r="14" fill="#fff" opacity="0.5"/>
 
   <!-- Le robot, en grand, à gauche -->
-  <g transform="translate(70 70) scale(2.95)">
+  <g transform="translate(80 60) scale(2.95)">
   <!-- Ombre au sol -->
   <ellipse cx="70" cy="163" rx="36" ry="6" fill="rgba(0,0,0,0.08)"/>
 
@@ -108,11 +109,10 @@
   </g>
 
   <!-- Textes à droite -->
-  <g class="titre" fill="#fff">
-    <text x="540" y="235" font-size="92">Ping-Pong</text>
-    <text x="540" y="335" font-size="92">Vocab 🏓</text>
-  </g>
-  <rect x="540" y="372" width="560" height="64" rx="32" fill="#fff"/>
-  <text class="titre" x="820" y="415" font-size="34" fill="#46a302" text-anchor="middle">Anglais ⇄ Français</text>
-  <text class="titre" x="540" y="498" font-size="32" fill="#eaffd6">Quiz · Prononciation · Révisions</text>
+  <text class="titre" x="560" y="230" font-size="104" fill="#ffffff">Ping-Pong</text>
+  <text class="titre" x="560" y="338" font-size="104" fill="#ffc400">Vocab</text>
+  <rect x="560" y="378" width="470" height="64" rx="10" fill="#ffc400"/>
+  <text class="titre" x="795" y="422" font-size="36" fill="#1f2933" text-anchor="middle">ANGLAIS ⇄ FRANÇAIS</text>
+  <text class="titre" x="560" y="500" font-size="32" fill="#c9d1d9">Quiz · Prononciation · Révisions</text>
 </svg>
+

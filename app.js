@@ -204,7 +204,7 @@ majBoutonTheme();
 //  Confettis
 // =====================================================
 
-const COULEURS = ["#58cc02", "#1cb0f6", "#ffc800", "#ff4b4b", "#ce82ff", "#ff9600"];
+const COULEURS = ["#ffc400", "#1f2933", "#ff8a1f", "#3d6f9e", "#2f9e44", "#e5484d"];
 
 function confettis(nombre, depuisX, depuisY) {
   const zone = $("confettis");
@@ -755,7 +755,7 @@ function afficherResultat() {
   const tour = 2 * Math.PI * 52;
   anneau.style.transition = "none";
   anneau.style.strokeDashoffset = tour;
-  anneau.style.stroke = ratio >= 0.6 ? "#58cc02" : ratio >= 0.4 ? "#ffc800" : "#ff9600";
+  anneau.style.stroke = ratio >= 0.6 ? "#2f9e44" : ratio >= 0.4 ? "#ffc400" : "#ff8a1f";
   void anneau.getBoundingClientRect();
   anneau.style.transition = "";
   requestAnimationFrame(() => { anneau.style.strokeDashoffset = tour * (1 - ratio); });
