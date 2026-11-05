@@ -1,0 +1,118 @@
+<!-- Image d'aperçu quand on partage le lien (WhatsApp, Snap, iMessage...).
+     L'image apercu.jpg est fabriquée à partir de ce dessin. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="fond" cx="30%" cy="40%" r="90%">
+      <stop offset="0" stop-color="#7ee026"/>
+      <stop offset="1" stop-color="#46a302"/>
+    </radialGradient>
+    <style>
+      .yeux-normal, .yeux-triste, .bouche-normal, .bouche-triste { display: none; }
+      .titre { font-family: "Segoe UI", "Arial Rounded MT Bold", Arial, sans-serif; font-weight: 900; }
+    </style>
+  </defs>
+  <rect width="1200" height="630" fill="url(#fond)"/>
+
+  <!-- Balles de ping-pong décoratives -->
+  <circle cx="1100" cy="95" r="30" fill="#fff" opacity="0.9"/>
+  <circle cx="560" cy="560" r="18" fill="#fff" opacity="0.7"/>
+  <circle cx="120" cy="80" r="14" fill="#fff" opacity="0.6"/>
+
+  <!-- Le robot, en grand, à gauche -->
+  <g transform="translate(70 70) scale(2.95)">
+  <!-- Ombre au sol -->
+  <ellipse cx="70" cy="163" rx="36" ry="6" fill="rgba(0,0,0,0.08)"/>
+
+  <g class="corps">
+    <!-- Jambes et bottes -->
+    <rect x="50" y="138" width="12" height="18" rx="5" fill="#7b8a99"/>
+    <rect x="78" y="138" width="12" height="18" rx="5" fill="#7b8a99"/>
+    <rect x="45" y="150" width="21" height="10" rx="5" fill="#3c3c3c"/>
+    <rect x="74" y="150" width="21" height="10" rx="5" fill="#3c3c3c"/>
+
+    <!-- Bras gauche -->
+    <g class="bras bras-g">
+      <rect x="20" y="102" width="14" height="34" rx="7" fill="#9fb3c4"/>
+      <circle cx="27" cy="138" r="8" fill="#7b8a99"/>
+    </g>
+    <!-- Bras droit avec une clé à molette -->
+    <g class="bras bras-d">
+      <rect x="106" y="102" width="14" height="34" rx="7" fill="#9fb3c4"/>
+      <path d="M113 130 L113 156" stroke="#5b6670" stroke-width="5" stroke-linecap="round"/>
+      <path d="M106 158 a7 7 0 1 0 14 0 l-4 0 l0 4 l-6 0 l0 -4 z" fill="#5b6670"/>
+      <circle cx="113" cy="138" r="8" fill="#7b8a99"/>
+    </g>
+
+    <!-- Cou -->
+    <rect x="60" y="90" width="20" height="12" fill="#7b8a99"/>
+
+    <!-- Corps : gilet orange de chantier -->
+    <rect x="34" y="98" width="72" height="48" rx="14" fill="#ff9600"/>
+    <rect x="34" y="124" width="72" height="7" fill="#f3f3f3"/>
+    <rect x="56" y="104" width="28" height="15" rx="4" fill="#2b3a42"/>
+    <circle cx="63" cy="111.5" r="3" fill="#58cc02"/>
+    <circle cx="70" cy="111.5" r="3" fill="#ffc800"/>
+    <circle cx="77" cy="111.5" r="3" fill="#ff4b4b"/>
+
+    <!-- Tête -->
+    <g class="tete">
+      <!-- Boulons sur les côtés -->
+      <circle cx="24" cy="72" r="6" fill="#7b8a99"/>
+      <circle cx="116" cy="72" r="6" fill="#7b8a99"/>
+
+      <rect x="26" y="44" width="88" height="52" rx="18" fill="#dbe5ee" stroke="#9fb3c4" stroke-width="3"/>
+
+      <!-- Lunettes de soudeur -->
+      <rect x="26" y="60" width="88" height="8" fill="#4a4a4a"/>
+      <rect x="64" y="61" width="12" height="6" rx="3" fill="#5b6670"/>
+      <circle cx="52" cy="65" r="15" fill="#5b6670"/>
+      <circle cx="88" cy="65" r="15" fill="#5b6670"/>
+      <circle cx="52" cy="65" r="11" fill="#1f3b47"/>
+      <circle cx="88" cy="65" r="11" fill="#1f3b47"/>
+
+      <!-- Yeux (3 humeurs) -->
+      <g class="yeux yeux-normal">
+        <circle cx="52" cy="66" r="4.5" fill="#7dffb0"/>
+        <circle cx="88" cy="66" r="4.5" fill="#7dffb0"/>
+      </g>
+      <g class="yeux yeux-content" fill="none" stroke="#7dffb0" stroke-width="3.5" stroke-linecap="round">
+        <path d="M46 68 Q52 59 58 68"/>
+        <path d="M82 68 Q88 59 94 68"/>
+      </g>
+      <g class="yeux yeux-triste">
+        <circle cx="52" cy="69" r="3.5" fill="#7dffb0"/>
+        <circle cx="88" cy="69" r="3.5" fill="#7dffb0"/>
+        <path d="M45 63 L58 60 M82 60 L95 63" stroke="#7dffb0" stroke-width="3" stroke-linecap="round"/>
+      </g>
+
+      <!-- Reflets sur les verres -->
+      <path d="M45 58 Q49 55 53 56" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.55"/>
+      <path d="M81 58 Q85 55 89 56" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.55"/>
+
+      <!-- Joues -->
+      <circle cx="37" cy="85" r="5" fill="#ff9bb0" opacity="0.6"/>
+      <circle cx="103" cy="85" r="5" fill="#ff9bb0" opacity="0.6"/>
+
+      <!-- Bouche (3 humeurs) -->
+      <path class="bouche bouche-normal" d="M60 84 Q70 92 80 84" stroke="#4a4a4a" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path class="bouche bouche-content" d="M58 82 Q70 98 82 82 Z" fill="#4a4a4a"/>
+      <path class="bouche bouche-triste" d="M60 90 Q70 82 80 90" stroke="#4a4a4a" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+      <!-- Casque de chantier -->
+      <path d="M30 50 Q30 12 70 12 Q110 12 110 50 Z" fill="#ffc800" stroke="#e0a800" stroke-width="3"/>
+      <rect x="63" y="13" width="14" height="36" rx="6" fill="#ffdf4d"/>
+      <rect x="22" y="45" width="96" height="10" rx="5" fill="#ffb000"/>
+    </g>
+  </g>
+
+  </g>
+
+  <!-- Textes à droite -->
+  <g class="titre" fill="#fff">
+    <text x="540" y="235" font-size="92">Ping-Pong</text>
+    <text x="540" y="335" font-size="92">Vocab 🏓</text>
+  </g>
+  <rect x="540" y="372" width="560" height="64" rx="32" fill="#fff"/>
+  <text class="titre" x="820" y="415" font-size="34" fill="#46a302" text-anchor="middle">Anglais ⇄ Français</text>
+  <text class="titre" x="540" y="498" font-size="32" fill="#eaffd6">Quiz · Prononciation · Révisions</text>
+</svg>

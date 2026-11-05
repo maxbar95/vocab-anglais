@@ -325,6 +325,14 @@ h2 { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; }
 }
 .reglage-titre { margin: 4px 0 8px; font-size: 0.95rem; color: var(--gris); }
 .reglage-titre + .segments { margin-bottom: 10px; }
+#reglage-cours .reglage-titre { display: block; }
+.choix-cours {
+  margin-bottom: 10px;
+  font-weight: 800;
+  color: var(--texte);
+  background: var(--carte);
+  cursor: pointer;
+}
 .segments { display: flex; gap: 8px; }
 .segments button {
   flex: 1;

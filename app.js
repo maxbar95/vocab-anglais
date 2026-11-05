@@ -11,18 +11,22 @@ const $ = (id) => document.getElementById(id);
 //  Lecture de la liste de mots (fichier mots.js)
 // =====================================================
 
+// Chaque mot retient son cours : c'est le dernier titre « # --- Cours 3 --- » placé au-dessus de lui
 function lireListe(texte) {
   const resultat = [];
   const dejaVus = new Set();
+  let cours = null;
   texte.split("\n").forEach((ligne) => {
     ligne = ligne.trim();
+    const titre = ligne.match(/^#\s*-{2,}\s*(.+?)\s*-{2,}\s*$/);
+    if (titre) { cours = titre[1]; return; }
     if (!ligne || ligne.startsWith("#") || !ligne.includes("=")) return;
     const position = ligne.indexOf("=");
     const en = nettoyer(ligne.slice(0, position));
     const fr = nettoyer(ligne.slice(position + 1));
     if (!en || !fr || dejaVus.has(en)) return; // ligne vide ou doublon : ignorée
     dejaVus.add(en);
-    resultat.push({ en, fr });
+    resultat.push({ en, fr, cours });
   });
   return resultat;
 }
@@ -241,15 +245,51 @@ function afficherEcran(nom) {
   if (nom !== "quiz") $("bandeau").classList.remove("visible");
 }
 
+// =====================================================
+//  Choix du cours (menu « 📚 Cours », visible dès qu'il y a au moins 2 cours)
+// =====================================================
+
+// Liste des cours, dans l'ordre du fichier mots.js
+const LISTE_COURS = [...new Set(mots.map((m) => m.cours).filter(Boolean))];
+
+// Un cours enregistré qui n'existe plus (renommé dans mots.js) : retour à « tous »
+if (!reglages.cours || (reglages.cours !== "tous" && !LISTE_COURS.includes(reglages.cours))) reglages.cours = "tous";
+
+// Les mots du cours choisi (ou tous les mots)
+function motsChoisis() {
+  if (reglages.cours === "tous") return mots;
+  return mots.filter((m) => m.cours === reglages.cours);
+}
+
+function remplirMenuCours() {
+  const menu = $("choix-cours");
+  menu.innerHTML = "";
+  const tous = new Option(`Tous les cours (${mots.length} mots)`, "tous");
+  menu.add(tous);
+  LISTE_COURS.forEach((c) => {
+    const n = mots.filter((m) => m.cours === c).length;
+    menu.add(new Option(`${c} (${n} mot${n > 1 ? "s" : ""})`, c));
+  });
+  menu.value = reglages.cours;
+  $("reglage-cours").hidden = LISTE_COURS.length < 2;
+}
+
+$("choix-cours").addEventListener("change", () => {
+  reglages.cours = $("choix-cours").value;
+  sauverReglages();
+  majAccueil();
+});
+
 // Nombre de mots dans un quiz, selon le réglage « Longueur »
 function tailleQuiz() {
-  if (reglages.longueur === "tous") return mots.length;
-  return Math.min(Number(reglages.longueur) || 20, mots.length);
+  const dispo = motsChoisis().length;
+  if (reglages.longueur === "tous") return dispo;
+  return Math.min(Number(reglages.longueur) || 20, dispo);
 }
 
 function majAccueil() {
   $("nb-mots").textContent = mots.length;
-  $("nb-tous").textContent = mots.length;
+  $("nb-tous").textContent = motsChoisis().length;
   const record = lireRecord();
   $("record").textContent = record ? `${formatPoints(record.score)}/${record.total}` : "–";
 
@@ -308,7 +348,9 @@ function majAccueil() {
     $("info-quiz").textContent = "La liste de mots est vide (fichier mots.js).";
   } else {
     $("btn-commencer").disabled = false;
-    $("info-quiz").textContent = "📅 Le quiz commence par les mots à réviser aujourd'hui.";
+    $("info-quiz").textContent = reglages.cours === "tous"
+      ? "📅 Le quiz commence par les mots à réviser aujourd'hui."
+      : `📚 Quiz sur « ${reglages.cours} » seulement, en commençant par les mots à réviser.`;
   }
 }
 
@@ -395,7 +437,7 @@ function tirerMots(nombre) {
   const plusTard = [];
 
   // On mélange d'abord : à date égale, l'ordre sera donc aléatoire
-  melanger(mots).forEach((mot) => {
+  melanger(motsChoisis()).forEach((mot) => {
     const s = statsDe(mot.en);
     if (s.prochaine === null) jamaisVus.push(mot);
     else if (estAReviser(mot.en)) aReviser.push(mot);
@@ -416,7 +458,7 @@ function sensDeLaQuestion(i) {
 }
 
 function demarrerQuiz() {
-  if (mots.length === 0) return;
+  if (motsChoisis().length === 0) return;
   const questions = tirerMots(tailleQuiz()).map((mot, i) => ({ mot, sens: sensDeLaQuestion(i) }));
   lancerQuiz(questions, false);
 }
@@ -781,11 +823,13 @@ function afficherListe() {
   const recherche = nettoyer($("recherche").value);
   liste.innerHTML = "";
 
-  const visibles = mots.filter((m) =>
+  // Si un cours est choisi sur l'accueil, on n'affiche que ses mots
+  const visibles = motsChoisis().filter((m) =>
     (!recherche || m.en.includes(recherche) || m.fr.includes(recherche)) &&
     (filtreEtat === "tous" || etatDuMot(m.en) === filtreEtat));
 
-  $("nb-affiches").textContent = `${visibles.length} mot${visibles.length > 1 ? "s" : ""} affiché${visibles.length > 1 ? "s" : ""}.`;
+  const quelCours = reglages.cours === "tous" ? "" : ` (${reglages.cours})`;
+  $("nb-affiches").textContent = `${visibles.length} mot${visibles.length > 1 ? "s" : ""} affiché${visibles.length > 1 ? "s" : ""}${quelCours}.`;
 
   if (visibles.length === 0) {
     const vide = document.createElement("li");
@@ -890,4 +934,5 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 //  Démarrage
 // =====================================================
 
+remplirMenuCours();
 majAccueil();

@@ -6,6 +6,19 @@
   <title>Ping-Pong Vocab 🏓</title>
   <meta name="description" content="Anglais ⇄ Français, un mot après l'autre !">
 
+  <!-- Aperçu quand on partage le lien (WhatsApp, Snap, iMessage, Discord...) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pingpong-vocab-max.netlify.app/">
+  <meta property="og:site_name" content="Ping-Pong Vocab">
+  <meta property="og:title" content="Ping-Pong Vocab 🏓">
+  <meta property="og:description" content="Révise ton vocabulaire d'anglais avec le robot : quiz anglais ⇄ français, prononciation et révisions au bon moment.">
+  <meta property="og:image" content="https://pingpong-vocab-max.netlify.app/apercu.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Le robot de chantier de Ping-Pong Vocab, à côté du titre « Anglais ⇄ Français »">
+  <meta property="og:locale" content="fr_FR">
+  <meta name="twitter:card" content="summary_large_image">
+
   <!-- Appli installable : icône, nom, couleur de la barre du téléphone -->
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -71,6 +84,11 @@
 
       <!-- Réglages du quiz -->
       <div class="reglages">
+        <!-- Choix du cours : apparaît tout seul dès qu'il y a au moins 2 cours dans mots.js -->
+        <div id="reglage-cours" hidden>
+          <label class="reglage-titre" for="choix-cours">📚 Cours</label>
+          <select class="champ petit choix-cours" id="choix-cours"></select>
+        </div>
         <p class="reglage-titre">🎯 Sens</p>
         <div class="segments" data-reglage="sens">
           <button type="button" data-valeur="ping-pong">🏓 Ping-pong</button>
