@@ -66,6 +66,9 @@ body, .topbar, .carte, .bulle, .reglages, .carte-badge, .carte-compteur, .liste-
 
 * { box-sizing: border-box; }
 
+/* Un élément marqué « hidden » reste toujours caché, même si son style dit le contraire */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
@@ -566,7 +569,14 @@ h2 { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; }
   margin: 16px 0;
 }
 .erreurs ul { list-style: none; margin: 0; padding: 0; }
-.erreurs li { padding: 8px 0; border-top: 1px solid var(--bordure); }
+.erreurs li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--bordure);
+}
 .erreurs li:first-child { border-top: none; }
 .erreurs .bonne { color: var(--vert-texte); }
 
@@ -596,6 +606,56 @@ h2 { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; }
 
 .filtres { margin-bottom: 12px; }
 .filtres button { font-size: 0.85rem; }
+
+/* ============ Installer l'appli ============ */
+.aide-installer {
+  background: var(--bleu-clair);
+  border: 2px solid var(--bleu);
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin: 4px 0 12px;
+  color: var(--texte);
+}
+.aide-installer p { margin: 0 0 6px; }
+.aide-installer ol { margin: 0 0 8px; padding-left: 22px; }
+.aide-installer li { margin: 4px 0; }
+.aide-installer p:last-child { margin: 0; }
+
+/* ============ Boutons 🔊 (le robot lit le mot en anglais) ============ */
+.btn-ecouter {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 2px solid var(--bordure);
+  border-bottom-width: 4px;
+  border-radius: 12px;
+  background: var(--carte);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.btn-ecouter:hover { background: var(--bleu-clair); border-color: var(--bleu); }
+.btn-ecouter:active { transform: translateY(2px); border-bottom-width: 2px; }
+
+/* Sur la carte du quiz : sous le mot, bien centré */
+.carte-ecouter { display: block; margin: 12px auto 0; }
+
+/* Dans le bandeau de correction (sens 🇫🇷 → 🇬🇧) */
+.btn-ecouter-texte {
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: 2px solid currentColor;
+  border-radius: 12px;
+  background: transparent;
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.bandeau.bon .btn-ecouter-texte  { color: var(--vert-texte); }
+.bandeau.faux .btn-ecouter-texte { color: var(--rouge-texte); }
+
+/* Appareil sans voix de synthèse : on cache tous les 🔊 */
+.sans-voix .btn-ecouter, .sans-voix .btn-ecouter-texte { display: none !important; }
 
 /* ============ Confettis ============ */
 #confettis { position: fixed; inset: 0; pointer-events: none; z-index: 30; overflow: hidden; }

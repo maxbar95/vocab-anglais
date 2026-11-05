@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ping-Pong Vocab 🏓</title>
+  <meta name="description" content="Anglais ⇄ Français, un mot après l'autre !">
+
+  <!-- Appli installable : icône, nom, couleur de la barre du téléphone -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Ping-Pong Vocab">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ffffff">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -81,6 +92,18 @@
 
       <button class="btn btn-vert btn-grand" id="btn-commencer" type="button">▶️ Commencer un quiz</button>
       <button class="btn btn-blanc btn-grand" id="btn-mes-mots" type="button">📖 Ma liste</button>
+
+      <!-- Installer l'appli (caché si elle est déjà installée) -->
+      <button class="btn btn-blanc btn-grand" id="btn-installer" type="button" hidden>📲 Installer l'appli</button>
+      <div class="aide-installer" id="aide-installer" hidden>
+        <p><strong>Sur iPhone / iPad :</strong></p>
+        <ol>
+          <li>Ouvre ce site dans <strong>Safari</strong>.</li>
+          <li>Touche le bouton <strong>Partager</strong> (le carré avec une flèche ⬆️).</li>
+          <li>Choisis <strong>« Sur l'écran d'accueil »</strong>, puis <strong>Ajouter</strong>.</li>
+        </ol>
+        <p>Le robot apparaît alors sur ton écran, comme une vraie appli 🤖</p>
+      </div>
       <p class="petit-texte" id="info-quiz"></p>
     </section>
 
@@ -107,6 +130,8 @@
         <div class="robot robot-moyen" id="robot-quiz"></div>
         <div class="carte" id="carte">
           <span class="carte-mot" id="mot-question">…</span>
+          <button class="btn-ecouter carte-ecouter" id="btn-ecouter-carte" type="button"
+                  title="Écouter en anglais" aria-label="Écouter le mot en anglais" hidden>🔊</button>
         </div>
       </div>
 
@@ -196,6 +221,7 @@
       <div class="bandeau-texte">
         <p class="bandeau-titre" id="bandeau-titre"></p>
         <p class="bandeau-detail" id="bandeau-detail"></p>
+        <button class="btn-ecouter-texte" id="btn-ecouter-reponse" type="button" hidden>🔊 Écouter en anglais</button>
       </div>
       <button class="btn btn-grand" id="btn-continuer" type="button">Continuer</button>
     </div>

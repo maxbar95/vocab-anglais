@@ -141,6 +141,48 @@ $("btn-son").addEventListener("click", () => {
 majBoutonSon();
 
 // =====================================================
+//  Voix du robot : lit les mots anglais (accent britannique)
+//  Seulement quand on appuie sur 🔊 (même si les bruitages sont coupés).
+//  La voix vient du téléphone / de l'ordinateur : gratuite, elle marche aussi sans internet.
+// =====================================================
+
+const voixDispo = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+if (!voixDispo) document.documentElement.classList.add("sans-voix"); // les boutons 🔊 sont alors cachés
+
+// Choisit une voix britannique si l'appareil en a une, sinon une autre voix anglaise
+function voixAnglaise() {
+  const voix = speechSynthesis.getVoices();
+  return voix.find((v) => /^en[-_]GB$/i.test(v.lang)) || voix.find((v) => /^en([-_]|$)/i.test(v.lang)) || null;
+}
+
+function lireEnAnglais(texte) {
+  if (!voixDispo) return;
+  speechSynthesis.cancel(); // coupe le mot précédent s'il était encore en train d'être lu
+  // "floor/ground" est lu « floor, ground » (petite pause entre les deux)
+  const phrase = new SpeechSynthesisUtterance(joli(texte).replace(/\s*\/\s*/g, ", "));
+  phrase.lang = "en-GB";
+  const voix = voixAnglaise();
+  if (voix) phrase.voice = voix;
+  phrase.rate = 0.9; // un peu plus lent que la normale, pour bien entendre
+  speechSynthesis.speak(phrase);
+}
+
+// Certains navigateurs chargent la liste des voix en retard : on la demande dès le début
+if (voixDispo) speechSynthesis.getVoices();
+
+// Fabrique un petit bouton 🔊 qui lit un mot anglais
+function boutonEcouter(en) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "btn-ecouter";
+  b.textContent = "🔊";
+  b.title = "Écouter en anglais";
+  b.setAttribute("aria-label", `Écouter « ${joli(en)} » en anglais`);
+  b.addEventListener("click", () => lireEnAnglais(en));
+  return b;
+}
+
+// =====================================================
 //  Mode sombre (la logique est dans progression.js)
 // =====================================================
 
@@ -475,6 +517,9 @@ function afficherQuestion() {
     sens.className = "sens fr-en";
     $("mot-question").textContent = joli(q.mot.fr);
   }
+  // 🔊 sur la carte seulement si le mot affiché est anglais (sinon il donnerait la réponse)
+  $("btn-ecouter-carte").hidden = q.sens !== "en-fr";
+  $("btn-ecouter-reponse").hidden = true;
 
   const carte = $("carte");
   carte.className = "carte";
@@ -569,6 +614,9 @@ function validerReponse(tempsEcoule = false) {
   void serie.offsetWidth;
   if (quiz.serie >= 2) serie.classList.add("pop");
 
+  // Dans le sens 🇫🇷 → 🇬🇧, une fois la réponse donnée, on peut écouter le mot anglais
+  $("btn-ecouter-reponse").hidden = q.sens === "en-fr";
+
   $("barre").style.width = ((quiz.index + 1) / quiz.questions.length) * 100 + "%";
   $("btn-continuer").textContent = quiz.index + 1 < quiz.questions.length ? "Continuer" : "Voir mon score";
   requestAnimationFrame(() => bandeau.classList.add("visible"));
@@ -584,6 +632,15 @@ function questionSuivante() {
 
 $("btn-verifier").addEventListener("click", () => validerReponse());
 $("btn-continuer").addEventListener("click", questionSuivante);
+
+// Boutons 🔊 du quiz : ils lisent le mot anglais de la question en cours
+["btn-ecouter-carte", "btn-ecouter-reponse"].forEach((id) => {
+  $(id).addEventListener("click", () => {
+    if (quiz) lireEnAnglais(quiz.questions[quiz.index].mot.en);
+  });
+});
+// Sur téléphone : appuyer sur 🔊 de la carte ne doit pas fermer le clavier
+$("btn-ecouter-carte").addEventListener("pointerdown", (e) => e.preventDefault());
 
 // Touche Entrée : vérifier, puis continuer
 document.addEventListener("keydown", (e) => {
@@ -684,12 +741,14 @@ function afficherResultat() {
     const question = err.sens === "en-fr" ? err.mot.en : err.mot.fr;
     const reponse = err.sens === "en-fr" ? err.mot.fr : err.mot.en;
     const li = document.createElement("li");
+    const texte = document.createElement("span");
     const q = document.createElement("strong");
     q.textContent = joli(question);
     const b = document.createElement("span");
     b.className = "bonne";
     b.textContent = joli(reponse);
-    li.append(q, " → ", b);
+    texte.append(q, " → ", b);
+    li.append(texte, boutonEcouter(err.mot.en));
     liste.appendChild(li);
   });
   $("bloc-erreurs").hidden = erreurs.length === 0;
@@ -755,6 +814,7 @@ function afficherListe() {
     fr.textContent = "🇫🇷 " + joli(mot.fr);
     textes.append(en, fr);
     li.appendChild(textes);
+    li.appendChild(boutonEcouter(mot.en));
 
     // Quand le mot reviendra (révision espacée)
     const quand = document.createElement("span");
@@ -785,6 +845,46 @@ $("filtres").addEventListener("click", (e) => {
   $("filtres").querySelectorAll("button").forEach((x) => x.classList.toggle("choisi", x === b));
   afficherListe();
 });
+
+// =====================================================
+//  Appli installable
+// =====================================================
+
+const dejaInstallee = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const surIphone = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); // les iPad récents se font passer pour un Mac
+let demandeInstallation = null; // fournie par Chrome / Edge sur Android et ordinateur
+
+// Android, ordinateur : le navigateur nous prévient que l'appli peut être installée
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  demandeInstallation = e;
+  if (!dejaInstallee) $("btn-installer").hidden = false;
+});
+
+// iPhone : pas d'installation automatique, on affiche le mode d'emploi
+if (surIphone && !dejaInstallee) $("btn-installer").hidden = false;
+
+$("btn-installer").addEventListener("click", async () => {
+  if (demandeInstallation) {
+    demandeInstallation.prompt();
+    const choix = await demandeInstallation.userChoice;
+    demandeInstallation = null;
+    if (choix.outcome === "accepted") $("btn-installer").hidden = true;
+  } else {
+    $("aide-installer").hidden = !$("aide-installer").hidden;
+  }
+});
+
+window.addEventListener("appinstalled", () => {
+  $("btn-installer").hidden = true;
+  $("aide-installer").hidden = true;
+});
+
+// Mode hors-ligne (fichier sw.js) : seulement quand le site est en ligne, pas en double-cliquant sur le fichier
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
 
 // =====================================================
 //  Démarrage
